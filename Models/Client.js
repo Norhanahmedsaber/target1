@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const ClientSchema= mongoose.Schema(
+const ClientSchema= new mongoose.Schema(
     {
         fullName:{
             type:String,

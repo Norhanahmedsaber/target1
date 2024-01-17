@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const SellerSchema= mongoose.Schema(
+const SellerSchema= new mongoose.Schema(
     {
         fullName:{
             type:String,
