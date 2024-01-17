@@ -1,7 +1,19 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const ClientSchema= mongoose.Schema(
     {
-        
+        fullName:{
+            type:String,
+            required: [true, "Please enter name"]
+        },
+        email:{
+            type:String,
+            required:[true,"please enter an email"],
+            unique:[true]
+        },
+        pasword:{
+            type:String,
+            required:[true,"please enter a password"]
+        }
     },
     {
         timestamp: true
@@ -9,4 +21,4 @@ const ClientSchema= mongoose.Schema(
 )
 
 const Client = mongoose.model('Client', ClientSchema)
-module.export = Client
+export default Client
