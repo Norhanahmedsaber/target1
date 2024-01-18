@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const ClientSchema= mongoose.Schema(
+const ClientSchema= new mongoose.Schema(
     {
         fullName:{
             type:String,
@@ -10,7 +10,7 @@ const ClientSchema= mongoose.Schema(
             required:[true,"please enter an email"],
             unique:[true]
         },
-        pasword:{
+        password:{
             type:String,
             required:[true,"please enter a password"]
         }
