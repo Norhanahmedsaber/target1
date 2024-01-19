@@ -10,7 +10,7 @@ const ClientSchema= new mongoose.Schema(
             required:[true,"please enter an email"],
             unique:[true]
         },
-        pasword:{
+        password:{
             type:String,
             required:[true,"please enter a password"]
         }
