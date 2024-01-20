@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const SellerSchema= new mongoose.Schema(
+const ClientSchema= new mongoose.Schema(
     {
         fullName:{
             type:String,
@@ -10,15 +10,19 @@ const SellerSchema= new mongoose.Schema(
             required:[true,"please enter an email"],
             unique:[true]
         },
-        pasword:{
+        password:{
             type:String,
             required:[true,"please enter a password"]
-        } 
+        },
+        role:{
+            type:String,
+            enum:['CLIENT','SELLER']
+        }
     },
     {
         timestamp: true
     }
 )
 
-const Seller = mongoose.model('Seller', SellerSchema)
-export default {Seller}
+const Client = mongoose.model('Client', ClientSchema)
+export default Client
