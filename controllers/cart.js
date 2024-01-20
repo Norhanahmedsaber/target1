@@ -1,4 +1,4 @@
-import Cart from '../Models/cart.js'
+/* import Cart from '../Models/cart.js'
 
 async function addItemToCart(payload) {
     const newItem = await Cart.create(payload)
@@ -13,6 +13,6 @@ async function getCart(){
     })
 
     return carts[0]
-}
+} */
 
 

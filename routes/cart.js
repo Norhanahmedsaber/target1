@@ -1,4 +1,4 @@
-import cart from '../controllers/cart.js'
+/* import cart from '../controllers/cart.js'
 import { Express } from 'express'
 const router = new express.Router()
 
@@ -6,7 +6,7 @@ router.post('/cart' , async(req,res)=>{
     const payload={
 
     }
-})
+}) */
 
 
 
@@ -17,4 +17,4 @@ router.post('/cart' , async(req,res)=>{
 
 
 
-export default router
+//export default router

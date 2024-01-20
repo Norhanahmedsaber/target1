@@ -1,8 +1,67 @@
-import User from '../Models/User.js'
-import Otp from '../Models/otp.js'
-import error from '../utils/generateErrorMessage.js'
-import userUtils from '../utils/user.js'
 import otpUtils from '../utils/otp.js'
+import userUtils from '../utils/user.js'
+import Otp from '../Models/otp.js'
+import User from '../Models/User.js'
+import error from '../utils/generateErrorMessage.js'
+async function resetPassword({otp,email,password,confirmedPassword}){
+    try{
+        const user=await isExist({email})
+        if(user){
+            const otpRecord= await isOtpExist(user[0]._id,otp)
+            if (otpRecord) {
+                if (password == confirmedPassword) {
+                    const result = await saveNewPassword(user,password)
+                    if(result){
+                        //handly hena error message
+                        await Otp.deleteOne({ _id: otpRecord._id });
+                        return error.generateErrorMessage(200,'Password reset successfully')
+                    } return error.generateErrorMessage(400,'Error resetting password')
+                } return error.generateErrorMessage(400, 'Password and Confirm Password do not match');
+            } return error.generateErrorMessage(400,'Invalid OTP')
+    }return error.generateErrorMessage(404,'User not found')
+    }
+    catch(err){
+        console.error(err)
+        return error.generateErrorMessage(500, 'Error');
+    }
+}
+
+async function isOtpExist(id,otp){
+    const otpRecord = await Otp.find({ userId:id, otp });
+    if(otpRecord){
+        return otpRecord
+    }
+    return false
+}
+
+async function saveNewPassword(user ,password ){
+    user.password = userUtils.ecncryptPassword(password)
+    const result = await User.save({email,password})
+    if(!result){
+        return error.generateErrorMessage(500,"Internal server Error")
+    }
+    userUtils.generateToken(result)
+    return{value:result} 
+}
+async function frogetPassword({email}){
+    console.log("bsssss")
+    try{
+        const user= await isExist({email})
+        console.log("user",user)
+        if(user){
+            console.log("aywaaa")
+            const generatedOtp= await otpUtils.generateOtp(user)
+            console.log("genrated otp",generatedOtp)
+            if(generatedOtp){
+                return error.generateErrorMessage(200, 'OTP generated succesfully');
+            } return error.generateErrorMessage(500, 'Internl server error');
+        }  return error.generateErrorMessage(404,'User not found')
+    }
+    catch(err){
+        console.error(err)
+        return error.generateErrorMessage(500, 'Error');
+    }
+}
 async function signUp({fullName , email , password ,confirmedPassword, role}){
    try {
     if(!fullName || !email || !password ||!confirmedPassword ){
@@ -67,63 +126,9 @@ async function isExist( email){
     console.log("mafee4 le length ya3n me4 mawgood")
     return false
 }
-async function isOtpExist(id,otp){
-    const otpRecord = await Otp.find({ userId:id, otp });
-    if(otpRecord){
-        return otpRecord
-    }
-    return false
-}
-async function saveNewPassword(user ,password ){
-    user.password = userUtils.ecncryptPassword(password)
-    const result = await User.save({email,password})
-    if(!result){
-        return error.generateErrorMessage(500,"Internal server Error")
-    }
-    userUtils.generateToken(result)
-    return{value:result} 
-}
-async function frogetPassword({email}){
-    console.log("bsssss")
-    try{
-        const user= await isExist({email})
-        console.log("user",user)
-        if(user){
-            console.log("aywaaa")
-            const generatedOtp= await otpUtils.generateOtp(user)
-            console.log("genrated otp",generatedOtp)
-            if(generatedOtp){
-                return error.generateErrorMessage(200, 'OTP generated succesfully');
-            } return error.generateErrorMessage(500, 'Internl server error');
-        }  return error.generateErrorMessage(404,'User not found')
-    }
-    catch(err){
-        console.error(err)
-        return error.generateErrorMessage(500, 'Error');
-    }
-}
-async function resetPassword({otp,email,password,confirmedPassword}){
-    try{
-        const user=await isExist({email})
-        if(user){
-            const otpRecord= await isOtpExist(user[0]._id,otp)
-            if (otpRecord) {
-                if (password == confirmedPassword) {
-                    const result = await saveNewPassword(user,password)
-                    if(result){
-                        //handly hena error message
-                        await Otp.deleteOne({ _id: otpRecord._id });
-                        return error.generateErrorMessage(200,'Password reset successfully')
-                    } return error.generateErrorMessage(400,'Error resetting password')
-                } return error.generateErrorMessage(400, 'Password and Confirm Password do not match');
-            } return error.generateErrorMessage(400,'Invalid OTP')
-    }return error.generateErrorMessage(404,'User not found')
-    }
-    catch(err){
-        console.error(err)
-        return error.generateErrorMessage(500, 'Error');
-    }
-}
+
+
+
 export default{
     signUp,
     signin,
