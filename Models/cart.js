@@ -4,7 +4,7 @@ const itemSchema = new mongoose.Schema(
     {
         productId:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"Product"
+            ref:"product"
         },
         quantity:{
             type:Number,

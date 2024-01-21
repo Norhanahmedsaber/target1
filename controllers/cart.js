@@ -50,10 +50,10 @@ async function addItemToCart({productId , quantity}) {
             }
             else
             {
-               return generateErrorMessage(400 , "Invalid request")
+                return generateErrorMessage(400 , "Invalid request")
             }
-         let data = await cart.save()
-         return {value:data}
+            let data = await cart.save()
+            return {value:data}
         }
         //create new cart if the cart is not exist 
         else{
@@ -85,14 +85,15 @@ async function getCart(){
         {
             generateErrorMessage(400 , "Cart not found! ")
         }
-        elseif(mycart.items.length == 0)
+        if(mycart.items.length == 0)
         {
             mycart.items = []
             mycart.subTotal=0
             const data = await mycart.save()
             return {value:data}
-        }
+        }  
         return {value:mycart}
+       
     }catch(err)
     {
         return (err.message)
@@ -100,11 +101,10 @@ async function getCart(){
     }
 }
 
-
 async function cartdb(){
     const carts = await Cart.find().populate({
         path:"items.productId",
-        select:"name price total"
+        select:"title price total"
     })
 
     return carts[0]
