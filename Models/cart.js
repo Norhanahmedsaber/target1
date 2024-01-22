@@ -13,11 +13,11 @@ const itemSchema = new mongoose.Schema(
         },
         price:{
             type:Number,
-            required:true,
+            // required:true,
         },
         total:{
             type:Number,
-            required:true
+            // required:true
         }
         
     },
@@ -32,6 +32,10 @@ const cartSchema = new mongoose.Schema(
         subTotal:{
             type:Number,
             default:0
+        },
+        userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Client"
         }
     },
     {

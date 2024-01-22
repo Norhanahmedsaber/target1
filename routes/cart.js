@@ -5,7 +5,7 @@ const router = new express.Router()
 router.post('/cart' , async(req,res)=>{
     try{
         const payload={
-            productId:req.body,
+            productId:req.body.productId,
             quantity:Number.parseInt(req.body.quantity)
         }
         const result = cart.addItemToCart(payload)
@@ -47,13 +47,13 @@ router.get('/cart' , async(req,res)=>{
     }
 })
 
-
-
-
-
-
-
-
-
+router.post("/deleteItem", async (req, res) => {
+    try {
+      await cart.findOneAndDelete({productId: req.body.productId})
+      res.send("Item deleted successfully!");
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  });
 
 export default router

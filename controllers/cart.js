@@ -5,7 +5,7 @@ import generateErrorMessage from '../utils/generateErrorMessage.js'
 async function addItemToCart({productId , quantity}) {
     try{
         let cart = await cartdb()
-        let productDetails = productModel.findById(productId)// get the product details from product models 
+        let productDetails = await productModel.findById(productId)// get the product details from product models 
         if(!productDetails)
         {
             return generateErrorMessage(500 , "Invalid Request")
@@ -68,6 +68,8 @@ async function addItemToCart({productId , quantity}) {
             }
             cart = await Cart.create(cartData)
             let data = await cart.save()
+            // res.status(200).json(data);
+
             console.log(data+"b4of eh data deh ttttt")
             return cart
         }
@@ -93,7 +95,7 @@ async function getCart(){
             return {value:data}
         }  
         return {value:mycart}
-       
+
     }catch(err)
     {
         return (err.message)
