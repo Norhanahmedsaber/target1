@@ -1,21 +1,17 @@
-import Order from '../Models/Order.js';  // Adjust the path accordingly
+import Order from '../Models/Order.js';  
 
 const createOrder = async (req, res) => {
   try {
-    // Extract data from the request body
     const { cartId, shippingInfo, payment } = req.body;
 
-    // Create a new order instance
     const newOrder = new Order({
-      order: [{ cartId }],
+      order: { cartId },
       shippingInfo,
       payment,
     });
 
-    // Save the order to the database
     const savedOrder = await newOrder.save();
 
-    // Send the saved order as a response
     res.status(201).json(savedOrder);
   } catch (error) {
     console.error(error);

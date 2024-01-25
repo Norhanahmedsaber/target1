@@ -103,6 +103,35 @@ async function getCart(){
     }
 }
 
+async function deleteItem(req, res, next) {
+    const { cartId, itemId } = req.params;
+  
+    try {
+      const cart = await Cart.findById(cartId);
+  
+      if (!cart) {
+        return next(new AppError("Cart not found", 404));
+      }
+  
+      const itemIndex = cart.items.findIndex((item) => item._id.toString() === itemId);
+  
+      if (itemIndex === -1) {
+        return next(new AppError("Item not found in cart", 404));
+      }
+  
+      cart.items.splice(itemIndex, 1);
+  
+      // Recalculate the subTotal
+      cart.subTotal = cart.items.reduce((total, item) => total + item.total, 0);
+  
+      await cart.save();
+  
+      res.json({ message: "Item deleted successfully", cart });
+    } catch (error) {
+    //   return next(new AppError("Something went wrong", 500));
+    }
+  }
+
 async function cartdb(){
     const carts = await Cart.find().populate({
         path:"items.productId",
@@ -114,6 +143,7 @@ async function cartdb(){
 
 export default{
     getCart,
-    addItemToCart
+    addItemToCart,
+    deleteItem
 }
 
