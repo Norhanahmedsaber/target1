@@ -1,10 +1,11 @@
 import Cart from '../Models/cart.js'
 import productModel from'../Models/productModel.js'
 import generateErrorMessage from '../utils/generateErrorMessage.js'
+import auth from '../middleware/auth.js'
 
 async function addItemToCart({productId , quantity}) {
     try{
-        let cart = await cartdb()
+        let cart = await cartdb();
         let productDetails = await productModel.findById(productId)// get the product details from product models 
         if(!productDetails)
         {
@@ -71,7 +72,7 @@ async function addItemToCart({productId , quantity}) {
             // res.status(200).json(data);
 
             console.log(data+"b4of eh data deh ttttt")
-            return cart
+            return { value: data };
         }
     }catch(err)
     {   
@@ -132,13 +133,23 @@ async function deleteItem(req, res, next) {
     }
   }
 
-async function cartdb(){
-    const carts = await Cart.find().populate({
-        path:"items.productId",
-        select:"title price total"
-    })
+async function cartdb(req){
+    
+    const user = req.user;
 
-    return carts[0]
+    if (user && user.cart) {
+        const cartId = user.cart; // Assuming cart is stored as an ID in the user object
+        const cart = await Cart.findById(cartId).populate({
+            path: "items.productId",
+            select: "title price total"
+        });
+
+        return cart;
+    } else {
+        // Handle the case where the user or user.cart is not available
+        return generateErrorMessage(404, "Cart not found");
+    }
+
 }
 
 export default{
