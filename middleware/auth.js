@@ -7,11 +7,11 @@ dotenv.config()
 
 const auth = async (req , res , next)=>{
     try {
-        const token = req.header('Authorization').replace('Bearer ' ,'')
+        const token = req.header('Authorization').replace('Bearer ' ,'Bearer ')
         const decoded = jwt.verify(token, process.env.SECRET)
-        console.log('Decoded Token:', decoded);
+        // console.log('Decoded Token:', token);
 
-        const user = await User.find(decoded[0]._id)
+        const user = await User.findById(decoded._id)
         if(!user) throw new Error()
         req.user = user
         req.token = token
