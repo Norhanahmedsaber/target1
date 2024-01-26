@@ -3,12 +3,11 @@ import middleware from '../middleware/auth.js'
 import  express  from 'express'
 const router = new express.Router()
 
-router.post('/cart' ,middleware.auth, async(req,res)=>{
+router.post('/cart' , async(req,res)=>{
     try{
         const payload={
             productId:req.body.productId,
             quantity:Number.parseInt(req.body.quantity),
-            user: req.user
         }
         const result = cart.addItemToCart(payload)
         if(!result)
