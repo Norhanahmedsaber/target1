@@ -33,7 +33,7 @@ const cartSchema = new mongoose.Schema(
             type:Number,
             default:0
         },
-        userId:{
+        user:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Client"
         }

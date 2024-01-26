@@ -4,7 +4,7 @@ import generateErrorMessage from '../utils/generateErrorMessage.js'
 
 async function addItemToCart({productId , quantity}) {
     try{
-        let cart = await cartdb()
+        let cart = await cartdb();
         let productDetails = await productModel.findById(productId)// get the product details from product models 
         if(!productDetails)
         {
@@ -71,7 +71,7 @@ async function addItemToCart({productId , quantity}) {
             // res.status(200).json(data);
 
             console.log(data+"b4of eh data deh ttttt")
-            return cart
+            return { value: data };
         }
     }catch(err)
     {   
@@ -131,8 +131,7 @@ async function deleteItem(req, res, next) {
     //   return next(new AppError("Something went wrong", 500));
     }
   }
-
-async function cartdb(){
+  async function cartdb(){
     const carts = await Cart.find().populate({
         path:"items.productId",
         select:"title price total"

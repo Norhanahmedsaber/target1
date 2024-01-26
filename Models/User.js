@@ -17,7 +17,10 @@ const ClientSchema= new mongoose.Schema(
         role:{
             type:String,
             enum:['CLIENT','SELLER']
-        }
+        },
+        token: {
+            type: String,
+        },
     },
     {
         timestamp: true

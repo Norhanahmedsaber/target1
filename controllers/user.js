@@ -40,8 +40,12 @@ async function saveNewPassword(user ,password ){
     if(!result){
         return error.generateErrorMessage(500,"Internal server Error")
     }
-    userUtils.generateToken(result)
-    return{value:result} 
+    const token= userUtils.generateToken(result)
+    await user.save();
+
+    console.log('Generated Token:', user.token);  
+
+    return{value:result,token: user.token} 
 }
 async function frogetPassword({email}){
     console.log("bsssss")
@@ -73,6 +77,10 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
      if(!userUtils.validEmail(email)){
     return error.generateErrorMessage(403,'InValid Email Format')
     }
+
+    console.log('Original Password:', password);
+    console.log('Confirmed Password:', confirmedPassword);
+
     if(!userUtils.validPassword(password)){
         return error.generateErrorMessage(403,'Password must contain : at least 8 characters contain unique chaaracter contain uppercase letter')
     }
@@ -85,7 +93,10 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
                     return error.generateErrorMessage(500,"An error has ocured")
                 }
                 userUtils.generateToken(user)
-                return{value:user} 
+                // console.log('Generated Token:', user.token);  
+                await user.save();
+
+                return { value: user, token: user.token };
             }       
             return error.generateErrorMessage(400, 'Password and Confirm Password do not match');
         }           
