@@ -1,4 +1,4 @@
-import cart from "../controllers/cart.js";
+/* import cart from "../controllers/cart.js";
 import auth from "../middleware/auth.js";
 import express from "express";
 const router = new express.Router();
@@ -49,3 +49,4 @@ router.get("/cart", auth, async (req, res) => {
 router.delete("/deleteItem/:cartId/:itemId", auth, cart.deleteItem);
 
 export default router;
+ */

@@ -19,15 +19,7 @@ function generateToken(user) {
   user.token = token;
   console.log("Generated token :", user.token);
 }
-function validPassword(password) {
-  const regex = /^(?=.*[a-zA-Z\d]).{8,}$/;
-  return password.match(regex);
-  //     console.log('password not match');
-  //     return false;
-  // }
-  // console.log('password match', password);
-  // return true;
-}
+
 
 function validEmail(email) {
   if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
@@ -35,6 +27,16 @@ function validEmail(email) {
   }
   return true;
 }
+function validPassword(password){
+    const regex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    if(!password.match(regex)){
+        return false
+    }
+    console.log('password match',password)
+    return true
+}
+
+
 function ecncryptPassword(password) {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
