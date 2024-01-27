@@ -13,18 +13,17 @@ function generateToken(user) {
         expiresIn:'24h'
     })
     user.token = token
-    console.log('Generated token:' ,user.token)
+    console.log(user.token)
 }
-function validPassword(password) {
-    const regex = /^(?=.*[a-zA-Z\d]).{8,}$/;
-    return password.match(regex)
-    //     console.log('password not match');
-    //     return false;
-    // }
-    // console.log('password match', password);
-    // return true;
+function validPassword(password){
+    const regex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    if(!password.match(regex)){
+        console.log('password not match')
+        return false
+    }
+    console.log('password match',password)
+    return true
 }
-
 function validEmail(email){
     if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
         console.log('email  match')
