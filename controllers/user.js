@@ -33,23 +33,20 @@ async function isOtpExist(id,otp){
     }
     return false
 }
-
 async function saveNewPassword(user ,password ){
     user.password = userUtils.ecncryptPassword(password)
     const result = await User.save({email,password})
     if(!result){
         return error.generateErrorMessage(500,"Internal server Error")
+
     }
     userUtils.generateToken(result)
     return{value:result} 
 }
 async function frogetPassword({email}){
-    console.log("bsssss")
     try{
         const user= await isExist({email})
-        console.log("user",user)
         if(user){
-            console.log("aywaaa")
             const generatedOtp= await otpUtils.generateOtp(user)
             console.log("genrated otp",generatedOtp)
             if(generatedOtp){
@@ -70,24 +67,27 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
     if( role!=="CLIENT" &&role!== "SELLER"){
         return error.generateErrorMessage(403,'Invalid Role')
     }
+
+    if (!(await isExist({ email }))) {
+      if (password == confirmedPassword) {
+        password = userUtils.ecncryptPassword(password);
+        const user = await User.create({ fullName, email, password, role });
+        if (!user) {
+          return error.generateErrorMessage(500, "An error has ocured");
+        }
+        userUtils.generateToken(user);
+        console.log(user);
+        return { value: user };
+      }
+      return error.generateErrorMessage(
+        400,
+        "Password and Confirm Password do not match"
+      );
      if(!userUtils.validEmail(email)){
     return error.generateErrorMessage(403,'InValid Email Format')
     }
     if(!userUtils.validPassword(password)){
         return error.generateErrorMessage(403,'Password must contain : at least 8 characters contain unique chaaracter contain uppercase letter')
-    }
-    if (! await isExist({email})){
-        console.log("alllloo")
-    if (password == confirmedPassword) {
-                password = userUtils.ecncryptPassword(password)
-                const user = await User.create({fullName,email,password,role})
-                if(!user){
-                    return error.generateErrorMessage(500,"Internal Server Error")
-                }
-                userUtils.generateToken(user)
-                return{value:user} 
-            }       
-            return error.generateErrorMessage(400, 'Password and Confirm Password do not match');
         }           
          return error.generateErrorMessage(403,'user already exists')
  
@@ -96,6 +96,7 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
     return error.generateErrorMessage(500, 'Error during signup');
   }
 }
+
 async function signin({email,password}){
     try{
         if( !email || !password){
@@ -115,13 +116,13 @@ async function signin({email,password}){
       }
 }
 
-async function isExist( email){
-    const user=await User.find( email)
-    console.log(user)
-    if(user.length){
-        return user
-    }
-    return false
+async function isExist(email) {
+  const user = await User.find(email);
+  if (user.length) {
+    return user;
+  }
+  return false;
+
 }
 
 async function getById(_id)

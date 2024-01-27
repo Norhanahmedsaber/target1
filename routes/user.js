@@ -19,6 +19,7 @@ router.post('/signup',async(req,res)=>{
     })
 })
 
+
 router.get("/user/:id", async (req, res) => {
     const _id = req.params.id;
     const user = await userController.getById(_id);
@@ -29,6 +30,7 @@ router.get("/user/:id", async (req, res) => {
     }
     res.send(user);
   });
+
 
 router.post('/signin',async(req,res)=>{
     const payload ={
@@ -65,6 +67,7 @@ router.post('/reset-password',async(req,res)=>{
         otp:req.body.otp,
         password:req.body.password,
         confirmedPassword:req.body.confirmedPassword
+
     }
     const result =await userController.resetPassword(payload)
     if(result.value) {
