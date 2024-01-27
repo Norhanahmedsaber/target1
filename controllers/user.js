@@ -49,12 +49,8 @@ async function saveNewPassword(user, password) {
   if (!result) {
     return error.generateErrorMessage(500, "Internal server Error");
   }
-  const token = userUtils.generateToken(result);
-  await user.save();
-
-  console.log("Generated Token:", user.token);
-
-  return { value: result, token: user.token };
+  userUtils.generateToken(result);
+  return { value: result };
 }
 async function frogetPassword({ email }) {
   try {
@@ -99,9 +95,8 @@ async function signUp({ fullName, email, password, confirmedPassword, role }) {
           return error.generateErrorMessage(500, "An error has ocured");
         }
         userUtils.generateToken(user);
-        await user.save();
-
-        return { value: user, token: user.token };
+        console.log(user);
+        return { value: user };
       }
       return error.generateErrorMessage(
         400,
@@ -122,6 +117,7 @@ async function signin({ email, password }) {
     const user = await isExist({ email });
     if (user) {
       if (await userUtils.comparePassword(password, user[0].password)) {
+        console.log(user);
         userUtils.generateToken(user);
         return { value: user };
       }
@@ -137,7 +133,7 @@ async function signin({ email, password }) {
 async function isExist(email) {
   const user = await User.find(email);
   if (user.length) {
-    return { value: user };
+    return user;
   }
   return false;
 }

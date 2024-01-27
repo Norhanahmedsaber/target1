@@ -105,6 +105,7 @@ async function deleteItem(req, res, next) {
 
   try {
     const cart = await Cart.findById(cartId);
+    const item = await Cart.findById(itemId);
 
     if (!cart) {
       return next(new AppError("Cart not found", 404));
