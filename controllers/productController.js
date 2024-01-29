@@ -1,12 +1,12 @@
-import { findById } from "../Models/productModel.js";
-import { findById as _findById, findByIdAndUpdate } from "../Models/userModel.js";
-import catchAsync from "../middleware/catchAsyncError";
+const Product = require("../models/productModel");
+const User = require("../models/userModel");
+const catchAsync = require("../middleware/catchAsyncError");
 
 // Get Specific product
 const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await findById(id).populate("wishlist");
+    const product = await Product.findById(id).populate("wishlist");
     res.json(product);
   } catch (error) {
     throw new Error(error);
@@ -19,10 +19,10 @@ const addToWishlist = asyncHandler(async (req, res) => {
   const { prodId } = req.body;
 
   try {
-    const user = await _findById(_id);
+    const user = await User.findById(_id);
     const alreadyAdded = user.wishlist.find((id) => id.toString() === prodId);
     if (alreadyAdded) {
-      let user = await findByIdAndUpdate(
+      let user = await User.findByIdAndUpdate(
         _id,
         {
           $pull: { wishlist: prodId },
@@ -31,7 +31,7 @@ const addToWishlist = asyncHandler(async (req, res) => {
       );
       res.json(user);
     } else {
-      let user = await findByIdAndUpdate(
+      let user = await User.findByIdAndUpdate(
         _id,
         {
           $push: { wishlist: prodId },
@@ -51,7 +51,7 @@ const getWishlist = asyncHandler(async (req, res) => {
   console.log(_id);
 
   try {
-    const user = await _findById(_id).populate("wishlist");
+    const user = await User.findById(_id).populate("wishlist");
     res.json(user.wishlist);
   } catch (error) {
     throw new Error(error);

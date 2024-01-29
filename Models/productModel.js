@@ -62,4 +62,4 @@ const productSchema = mongoose.Schema({
 }, { timestamps: true , toJSON: { virtuals: true }})
 
 const productModel =mongoose.model('product',productSchema)
-export default productModel 
+export  default productModel

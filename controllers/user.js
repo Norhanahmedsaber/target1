@@ -53,10 +53,12 @@ async function saveNewPassword(user, password) {
   return { value: result };
 }
 async function frogetPassword({ email }) {
+  console.log("bsssss");
   try {
     const user = await isExist({ email });
     console.log("user", user);
     if (user) {
+      console.log("aywaaa");
       const generatedOtp = await otpUtils.generateOtp(user);
       console.log("genrated otp", generatedOtp);
       if (generatedOtp) {
@@ -88,6 +90,7 @@ async function signUp({ fullName, email, password, confirmedPassword, role }) {
       );
     }
     if (!(await isExist({ email }))) {
+      console.log("alllloo");
       if (password == confirmedPassword) {
         password = userUtils.ecncryptPassword(password);
         const user = await User.create({ fullName, email, password, role });
@@ -95,7 +98,6 @@ async function signUp({ fullName, email, password, confirmedPassword, role }) {
           return error.generateErrorMessage(500, "An error has ocured");
         }
         userUtils.generateToken(user);
-        console.log(user);
         return { value: user };
       }
       return error.generateErrorMessage(
@@ -117,7 +119,6 @@ async function signin({ email, password }) {
     const user = await isExist({ email });
     if (user) {
       if (await userUtils.comparePassword(password, user[0].password)) {
-        console.log(user);
         userUtils.generateToken(user);
         return { value: user };
       }
@@ -132,9 +133,12 @@ async function signin({ email, password }) {
 
 async function isExist(email) {
   const user = await User.find(email);
+  console.log(user);
   if (user.length) {
+    console.log("true lel length ");
     return user;
   }
+  console.log("mafee4 le length ya3n me4 mawgood");
   return false;
 }
 
