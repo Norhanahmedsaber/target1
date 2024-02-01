@@ -20,6 +20,18 @@ router.post('/signup',async(req,res)=>{
 })
 
 
+router.get("/user/:id", async (req, res) => {
+    const _id = req.params.id;
+    const user = await userController.getById(_id);
+    if(!user) {
+      return res.send({
+        message: "User not Found!"
+      })
+    }
+    res.send(user);
+  });
+
+
 router.post('/signin',async(req,res)=>{
     const payload ={
         email:req.body.email,
