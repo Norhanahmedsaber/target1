@@ -2,11 +2,11 @@ import express from "express";
 import Message from "../../Models/messageModel.js";
 import Conversation from "../../Models/conversationModel.js";
 import { setupSocket, getIO } from "../../socket.js";
-
+import auth from '../../middleware/auth.js'
 const router = express.Router();
 
 // Send Message
-router.post("/api/messages", async (req, res) => {
+router.post("/api/messages", auth , async (req, res) => {
   try {
     // Extract required fields from request body
     const { senderId, receiverId, productId, content } = req.body;
@@ -54,7 +54,7 @@ router.post("/api/messages", async (req, res) => {
 });
 
 // Update Message
-router.put("/api/messages/:messageId", async (req, res) => {
+router.put("/api/messages/:messageId", auth , async (req, res) => {
   try {
     // Extract required fields from request body
     const { content } = req.body;
@@ -84,7 +84,7 @@ router.put("/api/messages/:messageId", async (req, res) => {
 });
 
 // Delete Message
-router.delete("/api/messages/:messageId", async (req, res) => {
+router.delete("/api/messages/:messageId", auth , async (req, res) => {
   try {
     const messageId = req.params.messageId;
 
@@ -113,7 +113,7 @@ router.delete("/api/messages/:messageId", async (req, res) => {
 });
 
 // Get Conversation
-router.get("/api/conversations/:senderId/:receiverId", async (req, res) => {
+router.get("/api/conversations/:senderId/:receiverId", auth , async (req, res) => {
   try {
     const senderId = req.params.senderId;
     const receiverId = req.params.receiverId;
@@ -141,7 +141,7 @@ router.get("/api/conversations/:senderId/:receiverId", async (req, res) => {
 });
 
 // Delete Conversation
-router.delete("/api/conversations/:conversationId", async (req, res) => {
+router.delete("/api/conversations/:conversationId", auth , async (req, res) => {
   try {
     const conversationId = req.params.conversationId;
 

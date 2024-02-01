@@ -9,6 +9,6 @@ productRouter.post("/", uploadMixOfFile(arreyOfFields,'product'),addproduct);
 productRouter.get("/", getAllProduct);
 productRouter.get("/:id", getSpacificProduct);
 productRouter.put("/:id",uploadMixOfFile(arreyOfFields,'product'), updateProduct);
-productRouter.get("/:id", deleteProduct);
+productRouter.get("/:id", auth , deleteProduct);
 
 export default productRouter;
