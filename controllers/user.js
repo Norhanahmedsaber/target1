@@ -39,20 +39,31 @@ async function saveNewPassword(user ,password ){
     if(!result){
         return error.generateErrorMessage(500,"Internal server Error")
 
-    }
-    userUtils.generateToken(result)
-    return{value:result} 
+
+async function saveNewPassword(user, password) {
+  user.password = userUtils.ecncryptPassword(password);
+  const result = await User.save({ email, password });
+  if (!result) {
+    return error.generateErrorMessage(500, "Internal server Error");
+  }
+  userUtils.generateToken(result);
+  return { value: result };
 }
-async function frogetPassword({email}){
-    try{
-        const user= await isExist({email})
-        if(user){
-            const generatedOtp= await otpUtils.generateOtp(user)
-            console.log("genrated otp",generatedOtp)
-            if(generatedOtp){
-                return error.generateErrorMessage(200, 'OTP generated succesfully');
-            } return error.generateErrorMessage(500, 'Internl server error');
-        }  return error.generateErrorMessage(404,'User not found')
+async function frogetPassword({ email }) {
+  console.log("bsssss");
+  try {
+    const user = await isExist({ email });
+    console.log("user", user);
+    if (user) {
+      console.log("aywaaa");
+      const generatedOtp = await otpUtils.generateOtp(user);
+      console.log("genrated otp", generatedOtp);
+      if (generatedOtp) {
+        return error.generateErrorMessage(200, "OTP generated succesfully");
+      }
+      return error.generateErrorMessage(500, "Internl server error");
+       }  
+    return error.generateErrorMessage(404,'User not found')
     }
     catch(err){
         console.error(err)
@@ -69,6 +80,7 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
     }
 
     if (!(await isExist({ email }))) {
+      console.log("alllloo");
       if (password == confirmedPassword) {
         password = userUtils.ecncryptPassword(password);
         const user = await User.create({ fullName, email, password, role });
@@ -76,7 +88,6 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
           return error.generateErrorMessage(500, "An error has ocured");
         }
         userUtils.generateToken(user);
-        console.log(user);
         return { value: user };
       }
       return error.generateErrorMessage(
@@ -97,6 +108,7 @@ async function signUp({fullName , email , password ,confirmedPassword, role}){
   }
 }
 
+
 async function signin({email,password}){
     try{
         if( !email || !password){
@@ -113,14 +125,18 @@ async function signin({email,password}){
     }catch (err) {
         console.error(err);
         return error.generateErrorMessage(500, 'Error during login');
+
       }
 }
 
 async function isExist(email) {
   const user = await User.find(email);
+  console.log(user);
   if (user.length) {
+    console.log("true lel length ");
     return user;
   }
+  console.log("mafee4 le length ya3n me4 mawgood");
   return false;
 
 }
