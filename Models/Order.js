@@ -2,41 +2,41 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
     {
-        cartId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Cart"
+        cartId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cart"
         },
     },
     {
-        timestamps:true
+        timestamps: true
     }
 )
 
 const shippingInfoSchema = new mongoose.Schema(
     {
-        name:{
+        name: {
             type: String,
-            required:true
+            required: true
         },
-        Address:{
+        Address: {
             type: String,
-            required:true
+            required: true
         }
     }
 )
 const paymentSchema = new mongoose.Schema(
     {
-        cardNumber:{
+        cardNumber: {
             type: Number,
-            required:true
+            required: true
         },
-        expiryDate:{
+        expiryDate: {
             type: Date,
-            required:true
+            required: true
         },
-        CVV:{
+        CVV: {
             type: String,
-            required:true
+            required: true
         },
     }
 )
@@ -46,5 +46,5 @@ const orderInfoSchema = new mongoose.Schema({
     shippingInfo: [shippingInfoSchema],
     payment: [paymentSchema]
 })
-const Order = mongoose.model('Order' , orderInfoSchema)
+const Order = mongoose.model('Order', orderInfoSchema)
 export default Order
