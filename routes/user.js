@@ -44,7 +44,6 @@ router.post('/signin',async(req,res)=>{
     })
 })
 router.post('/forgetpassword',async(req,res)=>{
-    console.log("tsss")
     let payload ={
         email:req.body.email
     }
