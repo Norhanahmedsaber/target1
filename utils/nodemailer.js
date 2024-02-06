@@ -3,7 +3,7 @@ async function mailSender(email, title, body) {
   try {
     // Create a Transporter to send emails
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp-relay.brevo.com",
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,

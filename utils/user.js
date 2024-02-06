@@ -17,7 +17,7 @@ function generateToken(user) {
     }
   );
   user.token = token;
-  console.log("Generated token :", user.token);
+  console.log(user.token)
 }
 
 
@@ -27,13 +27,12 @@ function validEmail(email) {
   }
   return true;
 }
-function validPassword(password){
-    const regex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
-    if(!password.match(regex)){
-        return false
-    }
-    console.log('password match',password)
+function validPassword(password) {
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+  if (password.match(regex)) {
     return true
+  }
+  return false
 }
 
 

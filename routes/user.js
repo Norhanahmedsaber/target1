@@ -58,10 +58,8 @@ router.post('/forgetpassword',async(req,res)=>{
     })
 })
 
-router.post('/reset-password',async(req,res)=>{
+router.put('/reset-password',async(req,res)=>{
     let payload ={
-        //na 4aka fe 7war el email 7asah momken yeb2a params
-        // etracyyyyyyyyyyyyyyyyy el sob7 el 8alta hena at2reban
         email:req.body.email,
         otp:req.body.otp,
         password:req.body.password,

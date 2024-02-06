@@ -1,4 +1,3 @@
-
 import { globalError } from "../middleware/globalError.js";
 import { AppError } from "../utils/AppError.js";
 import cartRouter from '../routes/cart.js';
@@ -25,5 +24,3 @@ export const apiRoutes = (app) => {
   });
   app.use(globalError);
 };
-
-
