@@ -5,4 +5,3 @@ const router = new express.Router();
 
 router.post("/order", order.createOrder);
 export default router;
-
