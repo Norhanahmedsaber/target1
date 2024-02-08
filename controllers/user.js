@@ -140,9 +140,23 @@ async function isExist(email) {
   return false;
 }
 
+async function getById(id) {
+  try {
+    const user = await User.find({ _id:(id) });
+    if (!user.length) {
+      return error.generateErrorMessage(500, 'Internal Server Error');
+    }
+
+    return user[0];
+  } catch (err) {
+    console.error(err);
+    return error.generateErrorMessage(502, 'Bad Gateway');
+  }
+}
 export default {
   signUp,
   signin,
   frogetPassword,
   resetPassword,
+  getById
 };
