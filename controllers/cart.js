@@ -1,6 +1,7 @@
 import Cart from "../Models/cart.js";
 import productModel from "../Models/productModel.js";
 import generateErrorMessage from "../utils/generateErrorMessage.js";
+import { AppError } from "../utils/AppError.js"
 async function addItemToCart({ productId, quantity }) {
   try {
     let cart = await cartdb();
