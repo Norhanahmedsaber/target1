@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-function generateToken(user) {
+async function generateToken(user) {
   const token = jwt.sign(
     {
       _id: user.id,
@@ -17,7 +17,9 @@ function generateToken(user) {
     }
   );
   user.token = token;
-  console.log(user.token)
+  return {
+    user: user
+  };
 }
 
 

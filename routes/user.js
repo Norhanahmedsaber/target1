@@ -51,7 +51,7 @@ router.post('/forgetpassword',async(req,res)=>{
     }
     const result =await userController.frogetPassword(payload)
     if(result.value) {
-        return res.send(result.value)
+        return res.send(result)
     }
     res.status(result.statusCode).send({
         message: result.message

@@ -2,6 +2,7 @@ import otpUtils from "../utils/otp.js";
 import userUtils from "../utils/user.js";
 import Otp from "../Models/otp.js";
 import User from "../Models/User.js";
+import mailer from "../utils/nodemailer.js"
 import error from "../utils/generateErrorMessage.js";
 async function resetPassword({ otp, email, password, confirmedPassword }) {
   try {
@@ -57,7 +58,13 @@ async function frogetPassword({ email }) {
     if (user) {
       const generatedOtp = await otpUtils.generateOtp(user);
       if (generatedOtp) {
-        return error.generateErrorMessage(200, "OTP generated succesfully");
+        const title = "Password Reset OTP";
+        const body = `Your OTP for password reset is: ${generatedOtp.otp}`;
+        await mailer.mailSender(email, title, body);
+               return { 
+          message: "OTP generated successfully",
+          value: generatedOtp.otp 
+        };
       }
       return error.generateErrorMessage(500, "Internl server error");
     }
@@ -91,8 +98,7 @@ async function signUp({ fullName, email, password, confirmedPassword, role }) {
         if (!user) {
           return error.generateErrorMessage(500, "An error has ocured");
         }
-        userUtils.generateToken(user);
-        console.log("signup token ",user)
+        await userUtils.generateToken(user);
         return { value: user };
       }
       return error.generateErrorMessage(
@@ -114,8 +120,7 @@ async function signin({ email, password }) {
     let user = await isExist({ email });
     if (user[0]) {
       if (await userUtils.comparePassword(password, user[0].password)) {
-        userUtils.generateToken(user[0]);
-        console.log("signin token ",user)
+        await userUtils.generateToken(user[0]);
         return { value: user[0] };
       }
       return error.generateErrorMessage(401, "Invalid password");
