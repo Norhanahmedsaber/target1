@@ -146,7 +146,6 @@ async function getById(id) {
     if (!user.length) {
       return error.generateErrorMessage(500, 'Internal Server Error');
     }
-
     return user[0];
   } catch (err) {
     console.error(err);
