@@ -29,13 +29,13 @@ function validEmail(email) {
   }
   return true;
 }
-function validPassword(password) {
-  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+/* function validPassword(password) {
+  const regex = /^^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
   if (password.match(regex)) {
     return true
   }
   return false
-}
+} */
 
 
 function ecncryptPassword(password) {
@@ -49,7 +49,7 @@ async function comparePassword(password, tobeMatched) {
 }
 export default {
   validEmail,
-  validPassword,
+  //validPassword,
   comparePassword,
   ecncryptPassword,
   generateToken,
