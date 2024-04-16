@@ -85,12 +85,12 @@ async function signUp({ fullName, email, password, confirmedPassword, role }) {
     if (!userUtils.validEmail(email)) {
       return error.generateErrorMessage(403, "InValid Email Format");
     }
-    if (!userUtils.validPassword(password)) {
+/*     if (!userUtils.validPassword(password)) {
       return error.generateErrorMessage(
         403,
-        " password must be at least eight characters, at least one letter, one number and one special character"
+        " Minimum eight characters, at least one letter and one number"
       );
-    }
+    } */
     if (!(await isExist({ email }))) {
       if (password == confirmedPassword) {
         password = userUtils.ecncryptPassword(password);
